@@ -29,7 +29,7 @@ Define your routes in `routes.rb` using any convention you like.
 ...
 namespace :signup do
   get "username", to: "username#new"
-  post "username, to: "username#create"
+  post "username", to: "username#create"
 
   get "details", to: "details#new"
   post "details", to: "details#create"
