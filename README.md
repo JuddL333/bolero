@@ -41,6 +41,7 @@ end
 
 ### Create your controllers
 ```ruby
+# app/controllers/signup/username_controller.rb
 class Signup::UsernameController < ApplicationController
   def new
     @step = UsernameStep.new(session: session)
