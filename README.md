@@ -42,6 +42,7 @@ end
 ### Create your controllers
 ```ruby
 # app/controllers/signup/username_controller.rb
+
 class Signup::UsernameController < ApplicationController
   def new
     @step = UsernameStep.new(session: session)
@@ -52,7 +53,7 @@ class Signup::UsernameController < ApplicationController
     @step.assign_attributes(username_params)
     
     if @step.save
-      redirect_to @step.next_path
+      redirect_to @step.next_step_path
     else
       render :new
     end
@@ -67,26 +68,29 @@ end
 
 ### Create your views
 ```ruby
+# app/views/signup/username/new.html.haml
+
   <%= simple_form_for @step, url: signup_username_path, method: :post do |f| %>
     <%= f.input :username %>
     <%= f.input :password %>
     <%= f.input :email %>
+    <%= f.button :submit %>
   <% end %>
 ```
 
 
 ### Create your step
 
-`app/multisteps/signup/username_step.rb`
-
 ```ruby
+# app/multisteps/signup/username_step.rb
+
 class Signup::UsernameStep
   include Bolero::Step
   
   attr_bolero_accessor :username, :password, :email
   
   validates :username, presence: true, length: { minimum: 4, maximum: 30 }
-  validate :email, presence: true
+  validates :email, presence: true
   validates :password, presence: true
   
   def path
@@ -97,5 +101,11 @@ class Signup::UsernameStep
     url_helpers.signup_details_path
   end
 end
+```
+
+### Viewing Persisted Steps
+
+```ruby
+  Bolero::PersistedStep.all
 ```
 
